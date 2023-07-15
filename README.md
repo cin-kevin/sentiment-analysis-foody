@@ -24,7 +24,10 @@ REDIS_URL = "redis://:eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81@cache:6379/0"
 
 The following commands will clone the sub-modules of sentiment research
 ```shell
-git submodule update --init
+brew install git-lfs # MACOS
+# sudo apt install git-lfs # Ubuntu
+cd model-research/phobert-base-vietnamese-sentiment
+git clone git@hf.co:wonrax/phobert-base-vietnamese-sentiment
 ```
 
 ## Step 3 - Spin up services

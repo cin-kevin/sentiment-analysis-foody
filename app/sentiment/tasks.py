@@ -20,7 +20,7 @@ def sentiment_analyze_task():
 
     @param sentence - The sentence to analyze
     """
-    comments: list[Comment] = repo.get_comments_to_predict(0, 20)
+    comments: list[Comment] = repo.get_comments_to_predict(0, 50)
     logger.info(f"Found {len(comments)} comments not analyzed")
 
     for comment in comments:
