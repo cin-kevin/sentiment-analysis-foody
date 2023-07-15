@@ -4,7 +4,7 @@
 
 ## Step 1 - Prepare your Environment
 
-- Docker
+- Docker or Docker Desktop for Win or MacOs
 - Docker Compose
 
 Create the .env file
@@ -63,4 +63,8 @@ scrapy crawl foody
 ```
 
 ## Step 5 - Review admin dashboard
-...
+Browse: http://localhost:3000/
+
+Username: CTV
+
+Password: 1
