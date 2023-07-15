@@ -1,8 +1,8 @@
-from shared.db.schemas import User, Restaurant, Comment
-from shared.db.models import CommentUpdate
 from shared.db import engine
-from sqlalchemy.orm import sessionmaker, Session
+from shared.db.models import CommentOut, CommentUpdate
+from shared.db.schemas import Comment, Restaurant, User
 from shared.utils import get_uuid
+from sqlalchemy.orm import Session, sessionmaker
 
 
 class BaseRepo:
@@ -10,27 +10,32 @@ class BaseRepo:
         session: Session = sessionmaker(bind=engine)
         self._session: Session = session()
 
+    def get_user(self, username: str, password: str) -> User:
+        with self._session as ss:
+            user = (
+                ss.query(User)
+                .filter(User.username == username and User.password == password)
+                .first()
+            )
+            return user
+
     def insert_restaurant(self, restaurant: Restaurant) -> Restaurant:
         with self._session as ss:
-            restaurant.id = get_uuid()
+            # restaurant.id = get_uuid()
             ss.add(restaurant)
             ss.commit()
             return restaurant
 
     def insert_comment(self, comment: Comment) -> Comment:
         with self._session as ss:
-            comment.id = get_uuid()
+            # comment.id = get_uuid()
             ss.add(comment)
             ss.commit()
             return comment
 
     def update_comment(self, comment_in: CommentUpdate) -> Comment:
         with self._session as ss:
-            comment = (
-                ss.query(Comment)
-                .filter(Comment.id == comment_in.id)
-                .first()
-            )
+            comment = ss.query(Comment).filter(Comment.id == comment_in.id).first()
             obj_data = comment.as_dict()
             update_data = comment_in.model_dump(exclude_unset=True)
             for field in obj_data:
@@ -38,26 +43,40 @@ class BaseRepo:
                     setattr(comment, field, update_data[field])
 
             ss.commit()
-            ss.refresh(comment)
             return comment
 
     def get_comment(self, commentid) -> Comment:
         with self._session as ss:
-            return (
-                ss.query(Comment)
-                .filter(Comment.id == commentid)
-                .first()
-            )
+            return ss.query(Comment).filter(Comment.id == commentid).first()
 
-    def get_comments_mismatch_prediction(
-        self,
-        skip: int,
-        limit: int
-    ) -> list[Comment]:
+    def get_comments_to_predict(self, skip: int, limit: int) -> list[Comment]:
         with self._session as ss:
             comments = (
-                ss.query(Comment).filter(Comment.need_review is True)
+                ss.query(Comment)
+                .filter(Comment.model_prediction == None)
                 .offset(skip)
-                .limit(limit).all()
+                .limit(limit)
+                .all()
             )
             return comments
+
+    def get_comments_mismatch_prediction(
+        self, skip: int, limit: int
+    ) -> list[CommentOut]:
+        with self._session as ss:
+            comments: list[Comment] = (
+                ss.query(Comment)
+                .filter(Comment.need_review == True)
+                .order_by(Comment.restaurant_id)
+                .offset(skip)
+                .limit(limit)
+                .all()
+            )
+            total = ss.query(Comment).filter(Comment.need_review == True).count()
+
+            commentouts: list[CommentOut] = []
+            for comment in comments:
+                commentout = CommentOut.from_orm(comment)
+                commentouts.append(commentout)
+
+            return [commentouts, total]

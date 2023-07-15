@@ -1,5 +1,6 @@
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -8,3 +9,5 @@ dbhost = os.getenv("DB_HOST", "localhost")
 postgresuser = os.getenv("POSTGRES_USER", "postgres")
 postgrespassword = os.getenv("POSTGRES_PASSWORD", "postgres")
 postgresdb = os.getenv("POSTGRES_DB", "sentiment_analysis")
+schedule = os.getenv("SCHEDULE", "60")
+redis_url = os.getenv("REDIS_URL")
