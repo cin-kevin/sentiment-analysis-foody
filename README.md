@@ -4,6 +4,7 @@
 
 ## Step 1 - Prepare your Environment
 
+- Python3.10 (Guideline how to upgrade https://cloudbytes.dev/snippets/upgrade-python-to-latest-version-on-ubuntu-linux)
 - Docker or Docker Desktop for Win or MacOs
 - Docker Compose
 
@@ -41,6 +42,7 @@ The following commands wll use docker-compose to spin up all the follow services
 - schedule_extraction_beat: worker scheduler
 - webapi: the Rest API powered by FastAPI
 
+If it does not work for the 1st time, try to `make down` and run the following commands again
 ```shell
 make all
 ```
@@ -56,7 +58,9 @@ The following commands will run the spider
 ```shell
 cd app/crawler
 
-python3 -m venv .venv
+# Run the bellow in case your default python < 3.10
+sudo apt install python3.10-venv
+python3.10 -m venv .venv
 
 source .venv/bin/activate
 

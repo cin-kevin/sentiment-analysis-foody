@@ -49,7 +49,7 @@ class BaseRepo:
         with self._session as ss:
             return ss.query(Comment).filter(Comment.id == commentid).first()
 
-    def get_comments_to_predict(self, skip: int, limit: int) -> list[Comment]:
+    def get_comments_to_predict(self, skip: int, limit: int) -> list[CommentOut]:
         with self._session as ss:
             comments = (
                 ss.query(Comment)
@@ -58,7 +58,13 @@ class BaseRepo:
                 .limit(limit)
                 .all()
             )
-            return comments
+            commentouts: list[CommentOut] = []
+            for comment in comments:
+                commentout = CommentOut.from_orm(comment)
+                commentouts.append(commentout)
+
+            return commentouts
+
 
     def get_comments_mismatch_prediction(
         self, skip: int, limit: int
