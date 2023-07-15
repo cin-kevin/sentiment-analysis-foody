@@ -1,16 +1,8 @@
 import sqlalchemy as db
-from sqlalchemy import (
-    Column,
-    UUID,
-    VARCHAR,
-    INTEGER,
-    FLOAT,
-    TIMESTAMP,
-    BOOLEAN,
-    TEXT,
-    ForeignKey
-)
+from sqlalchemy import (BOOLEAN, FLOAT, INTEGER, TEXT, TIMESTAMP, UUID,
+                        VARCHAR, Column, ForeignKey)
 from sqlalchemy.orm import relationship
+
 from .base import Base
 
 
@@ -39,7 +31,7 @@ class Comment(Base):
     verified_result = Column(VARCHAR)
     report_comment = Column(TEXT)
     url = Column(VARCHAR)
-    user_id = Column(UUID, ForeignKey("user.id"))
+    user_id = Column(INTEGER, ForeignKey("user.id"))
     user = relationship(User, foreign_keys=user_id)
-    restaurant_id = Column(UUID, ForeignKey("restaurant.id"))
+    restaurant_id = Column(INTEGER, ForeignKey("restaurant.id"))
     restaurant = relationship(Restaurant, foreign_keys=restaurant_id)

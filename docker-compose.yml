@@ -3,15 +3,30 @@ version: '3.8'
 name: sentiment-analysis
 
 services:
-  rabbitmq:
-    image: rabbitmq:management
-    container_name: rabbitmq
-    environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
+  scrapy_splash:
+    image: scrapinghub/splash
+    restart: always
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - '8050:8050'
+
+  crawler:
+    build:
+      context: ./
+      dockerfile: app/crawler/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - scrapy_splash
+      - db
+
+  cache:
+    image: redis/redis-stack:latest
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-stack-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - cache:/var/lib/redis-stack
 
   db:
     image: postgres:15.2-alpine3.17
@@ -32,7 +47,15 @@ services:
       - .env
     restart: always
     depends_on:
-      - rabbitmq
+      - cache
+
+  schedule_extraction_beat:
+    build:
+      context: ./
+      dockerfile: app/sentiment/Dockerfile.beat
+    env_file:
+      - .env
+    restart: always
 
   webapi:
     build:
@@ -40,6 +63,8 @@ services:
       dockerfile: app/webapi/Dockerfile
     env_file:
       - .env
+    ports:
+      - 80:80
     command: /app/prestart.sh
     # command: tail -f /dev/null
     restart: always
@@ -47,7 +72,7 @@ services:
       - db
 
 volumes:
-  mongodb_data:
+  cache:
     driver: local
   db_sentiment:
     driver: local

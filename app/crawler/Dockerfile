@@ -1,4 +1,4 @@
-FROM python:3.10.5-slim-bullseye as apibuilder
+FROM python:3.10.5-slim-bullseye as crawlerbuilder
 RUN apt-get -y update && \
     apt-get install  --no-install-recommends -y \
     curl \
@@ -13,8 +13,8 @@ COPY ./base_requirements.txt /base_requirements.txt
 RUN pip install -r base_requirements.txt
 
 
-FROM apibuilder
+FROM crawlerbuilder
 COPY ./app ./app
-WORKDIR /app
-RUN pip install -r webapi/requirements.txt
-RUN chmod +x ./prestart.sh
+COPY ./app/crawler/requirements.txt /requirements.txt
+RUN pip install -r requirements.txt
+WORKDIR /app/crawler

@@ -4,8 +4,8 @@ Misc helpers/utils functions
 
 # # Native # #
 from time import time
-from uuid import uuid4
 from typing import Union
+from uuid import uuid4
 
 __all__ = ("get_time", "get_uuid")
 

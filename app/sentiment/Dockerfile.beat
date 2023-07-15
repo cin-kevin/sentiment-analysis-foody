@@ -19,6 +19,5 @@ RUN pip install -r requirements.txt
 
 FROM base
 COPY ./app ./app
-COPY ./model-research/phobert-base-vietnamese-sentiment/phobert-base-vietnamese-sentiment ./app/sentiment/phobert-base-vietnamese-sentiment
 WORKDIR /app
-ENTRYPOINT ["celery",  "-A",  "sentiment", "worker",  "-l",  "INFO"]
+ENTRYPOINT ["celery",  "-A",  "sentiment", "beat",  "-l",  "INFO"]
