@@ -9,8 +9,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def init():
-    dbsession = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+def init(engine_in):
+    engine_ = engine_in
+    if not engine_:
+        engine_ = engine
+    dbsession = sessionmaker(autocommit=False, autoflush=False, bind=engine_)
+    
     with dbsession() as session:
         user = session.query(User).filter(User.username == "CTV").first()
 

@@ -9,7 +9,7 @@ from transformers import AutoTokenizer, RobertaForSequenceClassification
 from .celery import app
 
 logger = logging.getLogger(__name__)
-repo = BaseRepo()
+repo = BaseRepo(None)
 
 
 @app.task(autoretry_for=(Exception,), retry_backoff=True)
