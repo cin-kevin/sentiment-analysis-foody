@@ -7,20 +7,17 @@ import scrapy
 
 
 class FoodyItem(scrapy.Item):
-    main_url = scrapy.Field() # DetailUrl
-    addr = scrapy.Field() # Address
-    rating = scrapy.Field() # AvgRating
-    id = scrapy.Field() # Id
-    totalreview = scrapy.Field() #TotalReview
-    name = scrapy.Field() # Name
-    pass
+    main_url = scrapy.Field()  # DetailUrl
+    addr = scrapy.Field()  # Address
+    rating = scrapy.Field()  # AvgRating
+    id = scrapy.Field()  # Id
+    totalreview = scrapy.Field()  # TotalReview
+    name = scrapy.Field()  # Name
 
 
 class FoodyCommentItem(scrapy.Item):
-    rating = scrapy.Field() # AvgRating
-    description = scrapy.Field() # Description
-    id = scrapy.Field() # Id
-    url = scrapy.Field() # Url
+    rating = scrapy.Field()  # AvgRating
+    description = scrapy.Field()  # Description
+    id = scrapy.Field()  # Id
+    url = scrapy.Field()  # Url
     resid = scrapy.Field()
-    pass
-

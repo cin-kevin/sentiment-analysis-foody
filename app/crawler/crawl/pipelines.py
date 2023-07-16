@@ -7,12 +7,14 @@
 # useful for handling different item types with a single interface
 import sys
 from pathlib import Path
+
 path_s = Path(__file__).parent.parent.parent
 sys.path.append(str(path_s))
 
-from .items import FoodyItem, FoodyCommentItem
 from shared.db.repo import BaseRepo
-from shared.db.schemas import Restaurant, Comment
+from shared.db.schemas import Comment, Restaurant
+
+from .items import FoodyCommentItem, FoodyItem
 
 repo = BaseRepo()
 
@@ -27,21 +29,17 @@ class CrawlPipeline:
 
     def insert_restaurant(self, restaurant: FoodyItem):
         res = Restaurant()
-        res.id = restaurant['id']
-        res.name = restaurant['name']
-        res.address = restaurant['addr']
-        res.url = restaurant['main_url']
-        repo.insert_restaurant(
-            res
-        )
-    
+        res.id = restaurant["id"]
+        res.name = restaurant["name"]
+        res.address = restaurant["addr"]
+        res.url = restaurant["main_url"]
+        repo.insert_restaurant(res)
+
     def insert_comments(self, comment: FoodyCommentItem):
         cmt = Comment()
-        cmt.id = comment['id']
-        cmt.content = comment['description']
-        cmt.url = comment['url']
-        cmt.rating = comment['rating']
-        cmt.restaurant_id = comment['resid']
-        repo.insert_comment(
-            cmt
-        )
+        cmt.id = comment["id"]
+        cmt.content = comment["description"]
+        cmt.url = comment["url"]
+        cmt.rating = comment["rating"]
+        cmt.restaurant_id = comment["resid"]
+        repo.insert_comment(cmt)

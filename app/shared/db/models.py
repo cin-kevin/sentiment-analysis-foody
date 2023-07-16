@@ -8,7 +8,7 @@ model_config = ConfigDict(extra="allow", from_attributes=True)
 
 @dataclass(config=model_config)
 class CommentUpdate(BaseModel):
-    id: int
+    id: Optional[int] = None
     content: Optional[str] = None
     rating: Optional[float] = None
     model_prediction: Optional[str] = None

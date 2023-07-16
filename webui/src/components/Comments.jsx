@@ -32,7 +32,7 @@ const style = {
 const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
-  
+
 
 const Comments = () => {
     const [commentList, setCommentList] = useState([]);
@@ -93,7 +93,7 @@ const Comments = () => {
 
     const handleModalDisagree = async (cmt) => {
         handleOpen();
-        setCurrentComment(cmt);   
+        setCurrentComment(cmt);
     }
 
     const handleAgree = async (cmt) => {
