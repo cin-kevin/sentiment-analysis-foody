@@ -100,3 +100,14 @@ chmod +x test_sentiment.sh
 source .venv/bin/activate
 pre-commit run --all-files
 ```
+
+# Technical debt and improvement
+## Technical debt
+- Not enough unit test
+- CI/CD for smooth integration
+
+## Improvement
+- Docker size for worker may be optimized smaller
+- Cache model with base class Celery for faster processing
+- Production ochestration by k8s
+- A Grafana stack for monitoring
