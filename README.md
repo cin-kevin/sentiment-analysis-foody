@@ -1,5 +1,8 @@
 # sentiment-analysis-foody
 
+# Component diagram
+![Component diagram](Component.png)
+
 # Quickstart Guide
 
 ## Step 1 - Prepare your Environment
@@ -75,3 +78,25 @@ Browse: http://localhost:3000/
 Username: CTV
 
 Password: 1
+
+
+
+# Development
+## Test
+Run unit test (Still in development)
+
+```shell
+cd app
+chmod +x test_sentiment.sh
+./test_sentiment.sh
+```
+
+## Run linter
+- black
+- flake8
+- isort
+
+```shell
+source .venv/bin/activate
+pre-commit run --all-files
+```
